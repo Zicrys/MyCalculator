@@ -2,11 +2,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 public class UiWindow extends JFrame {
     JTextField field1,field2;
     JButton add,sub,mul,div,eq;//'+','-','*','/','='
     JLabel res,prev;//result,previous actions
+    JLabel infoTestLabel;//лейбл для тестов
+    JRadioButton programmer, classic;
+    JComboBox<String> theme;
+    ButtonGroup groupRadioButtons = new ButtonGroup();//для добавления рк в группу
+
 
     UiWindow(){
         setTitle("MyCalculator");
@@ -17,7 +24,38 @@ public class UiWindow extends JFrame {
         container.add(field2 = new JTextField(25));
         container.add(res = createLabel());
 
+        container.add(programmer=new JRadioButton("programmer"));
+        container.add(classic=new JRadioButton("classic"));
+        container.add(infoTestLabel = new JLabel(""));
+        groupRadioButtons.add(programmer);//добавить в группу, чтобы можно было выбрать только одну рк
+        groupRadioButtons.add(classic);
+
+        container.add(theme = new JComboBox<String>(new String[]{"dark","light"}));
+
+        //Слушатель выбора элемента
+        programmer.addItemListener(new ItemListener(){
+            @Override
+            public void itemStateChanged(ItemEvent e){
+                JRadioButton item = (JRadioButton) e.getItem();
+                if(item.isSelected()){
+                    infoTestLabel.setText(item.getText());
+                }
+            }
+        });
+
+        classic.addItemListener(new ItemListener(){
+            @Override
+            public void itemStateChanged(ItemEvent e){
+                JRadioButton item = (JRadioButton) e.getItem();
+                if(item.isSelected()){
+                    infoTestLabel.setText(item.getText());
+                }
+            }
+        });
+
         container.add(add = createButton("+"));
+
+        //Слушатель событий нажатия
         add.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
